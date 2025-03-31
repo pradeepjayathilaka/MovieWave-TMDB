@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviewave_tmdb/models/movie_models.dart';
 import 'package:moviewave_tmdb/service/movies_service.dart';
+import 'package:moviewave_tmdb/widgets/search_details.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -48,38 +49,41 @@ class _MainPageState extends State<SearchPage> {
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: const InputDecoration(
-                      hintText: "Search for movie",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(100)),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: const InputDecoration(
+                        hintText: "Search for movie",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(100)),
+                        ),
                       ),
+                      onSubmitted: (_) {
+                        _searchMovies();
+                      },
                     ),
-                    onSubmitted: (_) {
-                      _searchMovies();
-                    },
                   ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.red[600],
-                    shape: BoxShape.circle,
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.red[600],
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.search, size: 30, weight: 10),
+                      onPressed: () {
+                        _searchMovies();
+                      },
+                    ),
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.search, size: 30, weight: 10),
-                    onPressed: () {
-                      _searchMovies();
-                    },
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
             if (_isLoading)
               const Center(child: CircularProgressIndicator())
@@ -95,7 +99,11 @@ class _MainPageState extends State<SearchPage> {
                 child: ListView.builder(
                   itemCount: _searchResults.length,
                   itemBuilder: (context, index) {
-                    return Column();
+                    return Column(
+                      children: [
+                        SearchDetailsWidget(movie: _searchResults[index]),
+                      ],
+                    );
                   },
                 ),
               ),

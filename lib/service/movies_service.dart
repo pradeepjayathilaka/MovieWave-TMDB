@@ -62,7 +62,7 @@ class MoviesService {
       }
     } catch (error) {
       print("Error searching movies: $error");
-      return [];
+      throw Exception("Failed to search movies:$error");
     }
   }
 }
