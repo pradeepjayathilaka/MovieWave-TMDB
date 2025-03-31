@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviewave_tmdb/models/movie_models.dart';
+import 'package:moviewave_tmdb/pages/single_movie_details_page.dart';
 import 'package:moviewave_tmdb/service/movies_service.dart';
 import 'package:moviewave_tmdb/widgets/movie_details.dart';
 
@@ -80,7 +81,17 @@ class _MainPageState extends State<MainPage> {
             }
             ;
             final Movie movie = _movies[index];
-            return MovieDetailsWidget(movie: movie);
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SingleMovieDetailsPage(movie: movie),
+                  ),
+                );
+              },
+              child: MovieDetailsWidget(movie: movie),
+            );
           },
         ),
       ),

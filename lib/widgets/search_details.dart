@@ -53,11 +53,11 @@ class SearchDetailsWidget extends StatelessWidget {
 
               Text(
                 "Popularity: ${movie.popularity}",
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 14, color: Colors.red[600]),
               ),
             ],
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 15),
           Divider(),
           SizedBox(height: 5),
         ],

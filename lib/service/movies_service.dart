@@ -65,4 +65,78 @@ class MoviesService {
       throw Exception("Failed to search movies:$error");
     }
   }
+  //similar Movies
+
+  Future<List<Movie>> fetchSimilarMovies(int MoviedID) async {
+    try {
+      final responce = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/movie/$MoviedID/similar?api_key=$_api_key",
+        ),
+      );
+      if (responce.statusCode == 200) {
+        final data = json.decode(responce.body);
+        final List<dynamic> results = data["results"];
+
+        return results.map((movieData) => Movie.fromjson(movieData)).toList();
+      } else {
+        throw Exception("Failed to fetch Similar movies");
+      }
+    } catch (error) {
+      print("Failed to fetch Similar movies: $error");
+      return [];
+    }
+  }
+
+  //recommended movies
+  Future<List<Movie>> fetchRecommendedMovies(int MoviedID) async {
+    try {
+      final responce = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/movie/$MoviedID/recommendations?api_key=$_api_key",
+        ),
+      );
+      if (responce.statusCode == 200) {
+        final data = json.decode(responce.body);
+        final List<dynamic> results = data["results"];
+
+        return results.map((movieData) => Movie.fromjson(movieData)).toList();
+      } else {
+        throw Exception("Failed to fetch recommended movies");
+      }
+    } catch (error) {
+      print("Failed to fetch recommended movies: $error");
+      return [];
+    }
+  }
+
+  //fetch by the movieid
+
+  Future<List<String>> fetchImageFromMovied(int MovieId) async {
+    try {
+      final _responce = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/movie/$MovieId/images?api_key=$_api_key",
+        ),
+      );
+      if (_responce.statusCode == 200) {
+        final data = json.decode(_responce.body);
+        final List<dynamic> backdrops = data["backdrops"];
+
+        // Extract file paths and return the first 10 images
+        return backdrops
+            .take(10)
+            .map(
+              (imageData) =>
+                  "https://image.tmdb.org/t/p/w500${imageData["file_path"]}",
+            )
+            .toList();
+      } else {
+        throw Exception("Failed to fetch images");
+      }
+    } catch (error) {
+      print("Error fetching image: $error");
+      return [];
+    }
+  }
 }
